@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEditor.U2D;
 using UnityEngine;
 
@@ -9,57 +10,38 @@ public class playerMovement : MonoBehaviour
     float speedMulti = 1f;
 
     private Rigidbody2D rb;
-
-    private float t = 0.0f;
-    private bool moving = false;
-
-
-
-    /*float acceleration = 0.6f;
-    float maxSpeed = 30f;
-    float speed = 0f;
-    private object Movement;*/
-
-    // Start is called before the first frame update
+    [SerializeField]
+    private bool IsJumping;
     void Start()
     {
-
-
-        /*var playerMovement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized * Time.deltaTime * moveSpeed;*/
+        rb = GetComponent<Rigidbody2D>();
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("MoveRight"))
+        if (Input.GetButton("Horizontal"))
         {
-            transform.Translate(Input.GetAxis("MoveRight") * speedMulti * 20f * Time.deltaTime, 0, 0);
+            rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speedMulti * 4000f * Time.deltaTime, rb.velocity.y);
         }
 
-        /*float ySpeed = Rigidbody2D.
-
-        if (
+        if (Input.GetButton("Jump") && IsJumping == false)
         {
-
-        }*/
-
-        if (Input.GetButton("Jump"))
-        {
-            rb.velocity = new Vector2 (0, 50f);
+            rb.AddForce(new Vector2 (rb.velocity.x, 15f));
+            Debug.Log("Jumped");
         }
+    }
 
-
-
-        /*   if (speed < maxSpeed)
-           {
-               speed += acceleration * Time.deltaTime;
-           }
-
-           transform.position.x = transform.position.x + speed * Time.deltaTime;
-
-           transform.position = new Vector3(
-               transform.position.x + Movement.x,
-               transform.position.y + Movement.y,
-               transform.position.z);*/
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.CompareTag("Ground"))
+        {
+            IsJumping = false;
+        }
+    }
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            IsJumping = true;
+        }
     }
 }
