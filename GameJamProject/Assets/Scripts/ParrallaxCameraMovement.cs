@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class ParrallaxCameraMovement : MonoBehaviour
 {
@@ -9,23 +6,25 @@ public class ParrallaxCameraMovement : MonoBehaviour
     Vector3 camStartPos;
     float distance;
 
+    [SerializeField]
     GameObject[] backgrounds;
     Material[] mat;
     float[] backSpeed;
 
     float farthestBack;
 
-    [Range(0.01f, 0.05f)]
+    [Range(0.01f, 1f)]
     public float parallaxSpeed;
 
     void Start()
     {
-        cam = cam = Camera.main.transform;
+        cam = Camera.main.transform;
         camStartPos = cam.position;
 
         int backCount = transform.childCount;
         mat = new Material[backCount];
         backSpeed = new float[backCount];
+        backgrounds = new GameObject[backCount];
 
         for (int i = 0; i < backCount; i++)
         {
@@ -55,12 +54,14 @@ public class ParrallaxCameraMovement : MonoBehaviour
     private void LateUpdate()
     {
         distance = cam.position.x - camStartPos.x;
-        transform.position = new Vector3(cam.position.x, transform.position.y, 0);
+        transform.position = new Vector3(cam.position.x + 10, transform.position.y, 0);
 
         for (int i = 0; i < backgrounds.Length; i++)
         {
             float speed = backSpeed[i] * parallaxSpeed;
-            mat[i].SetTextureOffset("_MainTex", new Vector2(distance,0)*speed);
+            mat[i].SetTextureOffset("_MainTex", new Vector2(distance, 0) * speed);
         }
     }
 }
+
+//https://www.youtube.com/watch?v=ZYZfKbLxoHI

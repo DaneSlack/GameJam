@@ -20,12 +20,13 @@ public class playerMovement : MonoBehaviour
     {
         if (Input.GetButton("Horizontal"))
         {
-            rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speedMulti * 4000f * Time.deltaTime, rb.velocity.y);
+            //rb.AddForce(new Vector2(Input.GetAxis("Horizontal") * speedMulti * 2000f * Time.deltaTime, rb.velocity.y));
+            rb.velocity = new Vector2(Input.GetAxis("Horizontal") * speedMulti * 3000f * Time.deltaTime, rb.velocity.y);
         }
 
-        if (Input.GetButton("Jump") && IsJumping == false)
+        if (Input.GetButtonDown("Jump") && IsJumping == false)
         {
-            rb.AddForce(new Vector2 (rb.velocity.x, 15f));
+            rb.AddForce(new Vector2 (rb.velocity.x, 1500f));
             Debug.Log("Jumped");
         }
     }
