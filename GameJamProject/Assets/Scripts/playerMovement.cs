@@ -12,12 +12,28 @@ public class playerMovement : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField]
     private bool IsJumping;
+
+    public SpriteRenderer spriteRenderer;
+    [SerializeField]
+    public Sprite Running;
+    [SerializeField]
+    public Sprite Walking;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer.sprite = Walking;
     }
     void Update()
     {
+        if (Input.GetButtonDown("Horizontal"))
+        {
+            spriteRenderer.sprite = Running;
+        }
+        if (Input.GetButtonUp("Horizontal"))
+        {
+            spriteRenderer.sprite = Walking;
+        }
         if (Input.GetButton("Horizontal"))
         {
             //rb.AddForce(new Vector2(Input.GetAxis("Horizontal") * speedMulti * 2000f * Time.deltaTime, rb.velocity.y));
